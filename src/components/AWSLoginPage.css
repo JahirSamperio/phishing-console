@@ -1,0 +1,286 @@
+/* Reset completo para la plantilla AWS */
+.aws-isolated {
+  all: initial;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background-color: #ffffff;
+  color: #111827;
+  min-height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.aws-isolated * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.aws-isolated .page-wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+}
+
+.aws-isolated .aws-logo {
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.aws-isolated .aws-logo img {
+  height: 60px;
+  width: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.aws-isolated .login-card {
+  width: 100%;
+  max-width: 520px;
+  border: 1px solid #d1d5db;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 24px 32px 28px;
+  background-color: #ffffff;
+}
+
+.aws-isolated .login-card h1 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  color: #111827;
+}
+
+.aws-isolated .form-group {
+  margin-bottom: 16px;
+}
+
+.aws-isolated .form-group label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #374151;
+}
+
+.aws-isolated .form-group input {
+  width: 100%;
+  padding: 7px 10px;
+  font-size: 13px;
+  border: 1px solid #9ca3af;
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  color: #111827;
+  background: #ffffff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  line-height: normal;
+}
+
+.aws-isolated .form-group input:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 1px #f59e0b;
+}
+
+.aws-isolated .btn-primary {
+  margin-top: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 2px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: #f59e0b;
+  color: #111827;
+  transition: background-color 0.15s ease;
+}
+
+.aws-isolated .btn-primary:hover {
+  background-color: #d97706;
+}
+
+.aws-isolated .login-footer-text {
+  margin-top: 16px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #4b5563;
+}
+
+.aws-isolated .login-footer-text a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.aws-isolated .login-footer-text a:hover {
+  text-decoration: underline;
+}
+
+.aws-isolated .email-label {
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.aws-isolated .email-label span {
+  color: #2563eb;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.aws-isolated input[type="password"],
+.aws-isolated input[type="text"] {
+  width: 100%;
+  padding: 7px 10px;
+  font-size: 13px;
+  border: 1px solid #9ca3af;
+  border-radius: 2px;
+  margin-bottom: 15px;
+  color: #111827;
+  background: #ffffff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  line-height: normal;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.aws-isolated input[type="password"]:focus,
+.aws-isolated input[type="text"]:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 1px #f59e0b;
+}
+
+.aws-isolated .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+.aws-isolated .forgot {
+  margin-left: auto;
+  font-size: 12px;
+}
+
+.aws-isolated .forgot a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.aws-isolated .user-email {
+  font-size: 13px;
+  margin-bottom: 18px;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.aws-isolated .user-email span {
+  color: #2563eb;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.aws-isolated .label-small {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.aws-isolated .mfa-help {
+  font-size: 13px;
+  margin-top: 18px;
+}
+
+.aws-isolated .mfa-help a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.aws-isolated .mfa-help a:hover {
+  text-decoration: underline;
+}
+
+.aws-isolated .decor-bottom {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  padding: 0 40px;
+}
+
+.aws-isolated .cube-group {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+}
+
+.aws-isolated .cube {
+  border: 2px solid #d1d5f0;
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.aws-isolated .cube.small {
+  width: 60px;
+  height: 60px;
+}
+
+.aws-isolated .cube.tall {
+  height: 110px;
+}
+
+.aws-isolated .cube::before,
+.aws-isolated .cube::after {
+  content: "";
+  position: absolute;
+  border: 1px solid #e5e7f5;
+}
+
+.aws-isolated .cube::before {
+  inset: 12px 6px auto 6px;
+  height: 0;
+  border-width: 1px 0 0 0;
+}
+
+.aws-isolated .cube::after {
+  inset: 6px auto 6px 50%;
+  width: 0;
+  border-width: 0 0 0 1px;
+}
+
+@media (max-width: 768px) {
+  .aws-isolated .page-wrapper {
+    padding: 24px 12px 80px;
+  }
+
+  .aws-isolated .decor-bottom {
+    display: none;
+  }
+
+  .aws-isolated .aws-logo {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .aws-isolated .login-card {
+    max-width: 100%;
+    padding: 20px 16px 22px;
+  }
+}

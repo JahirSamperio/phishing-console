@@ -1,0 +1,5 @@
+2025-11-21T19:05:29.775Z | ENVIADO | {"destinatario":"jahirsampe1234@gmail.com","remitenteFalso":"Recursos Humanos","tipoPlantilla":"aws","timestamp":"2025-11-21T19:05:29.775Z"}
+2025-11-21T19:07:58.705Z | ENVIADO | {"destinatario":"jahirsampe1234@gmail.com","remitenteFalso":"Recursos Humanos","tipoPlantilla":"aws","timestamp":"2025-11-21T19:07:58.705Z"}
+2025-11-21T19:14:54.545Z | ENVIADO | {"destinatario":"sa399098@uaeh.edu.mx","remitenteFalso":"Recursos Humanos","tipoPlantilla":"aws","timestamp":"2025-11-21T19:14:54.545Z"}
+2025-11-21T19:18:37.603Z | ENVIADO | {"destinatario":"jahir.samperio@xaldigital.com","remitenteFalso":"Recursos Humanos","tipoPlantilla":"aws","timestamp":"2025-11-21T19:18:37.603Z"}
+2025-11-21T19:23:59.014Z | ENVIADO | {"destinatario":"jahirsampe1234@gmail.com","remitenteFalso":"Recursos Humanos","tipoPlantilla":"aws","timestamp":"2025-11-21T19:23:59.013Z"}

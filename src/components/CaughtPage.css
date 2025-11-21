@@ -1,0 +1,406 @@
+.caught-page {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: 
+    linear-gradient(45deg, #ff0000 0%, #cc0000 25%, #ff0000 50%, #cc0000 75%, #ff0000 100%),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 0, 0.1) 2px,
+      rgba(255, 255, 0, 0.1) 4px
+    );
+  animation: alertBackground 2s infinite;
+  padding: 20px 0;
+}
+
+@keyframes alertBackground {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.caught-page * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.caught-page .container {
+  background: #ffffff;
+  border: 5px solid #ff0000;
+  border-radius: 15px;
+  box-shadow: 
+    0 0 30px rgba(255, 0, 0, 0.8),
+    inset 0 0 20px rgba(255, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  overflow: visible;
+  animation: alertPulse 1s infinite, slideIn 0.5s ease-out;
+  margin: 20px;
+  color: #333;
+  position: relative;
+}
+
+@keyframes alertPulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 30px rgba(255, 0, 0, 0.8),
+      inset 0 0 20px rgba(255, 0, 0, 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 50px rgba(255, 0, 0, 1),
+      inset 0 0 30px rgba(255, 0, 0, 0.2);
+  }
+}
+
+.caught-page .container::before {
+  content: '⚠️ ALERTA DE SEGURIDAD ⚠️';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff0000;
+  color: white;
+  padding: 5px 20px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  animation: blink 1s infinite;
+  z-index: 10;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.caught-page .header {
+  background: 
+    linear-gradient(135deg, #ff0000 0%, #cc0000 50%, #ff0000 100%),
+    repeating-linear-gradient(
+      45deg,
+      #ffff00 0px,
+      #ffff00 10px,
+      #ff0000 10px,
+      #ff0000 20px
+    );
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid #ffff00;
+}
+
+.caught-page .header::before {
+  content: '🚨';
+  position: absolute;
+  font-size: 200px;
+  opacity: 0.2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.caught-page .header-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: alertBounce 0.5s infinite;
+  filter: drop-shadow(0 0 10px #ffff00);
+}
+
+@keyframes alertBounce {
+  0%, 100% { transform: scale(1) rotate(-5deg); }
+  50% { transform: scale(1.2) rotate(5deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.caught-page .header h1 {
+  color: #ffff00;
+  font-size: 36px;
+  margin-bottom: 10px;
+  text-shadow: 
+    2px 2px 0px #000000,
+    0 0 20px #ffff00;
+  font-family: 'Impact', 'Arial Black', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: textGlow 1s infinite;
+}
+
+@keyframes textGlow {
+  0%, 100% { text-shadow: 2px 2px 0px #000000, 0 0 20px #ffff00; }
+  50% { text-shadow: 2px 2px 0px #000000, 0 0 30px #ffff00, 0 0 40px #ffff00; }
+}
+
+.caught-page .header p {
+  color: #ffffff;
+  font-size: 18px;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000000;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 5px 15px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.caught-page .content {
+  padding: 40px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.caught-page .user-info {
+  background: 
+    linear-gradient(135deg, #ffeecc 0%, #ffd700 100%);
+  border: 3px solid #ff8800;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(255, 136, 0, 0.5);
+  animation: userInfoPulse 2s infinite;
+}
+
+@keyframes userInfoPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.caught-page .user-info strong {
+  color: #856404;
+  font-size: 16px;
+}
+
+.caught-page .alert-box {
+  background: 
+    linear-gradient(135deg, #ffe5e5 0%, #ffcccc 100%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 0, 0, 0.1) 10px,
+      rgba(255, 0, 0, 0.1) 20px
+    );
+  border: 3px solid #ff0000;
+  border-left: 8px solid #ff0000;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+  position: relative;
+}
+
+.caught-page .alert-box::before {
+  content: '🚨 CRÍTICO 🚨';
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  background: #ff0000;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+  animation: blink 1s infinite;
+}
+
+.caught-page .alert-box h2 {
+  color: #c91c1c;
+  margin-bottom: 15px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.caught-page .alert-box p {
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 10px;
+}
+
+.caught-page .stats-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white !important;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.caught-page .stats-box h3 {
+  color: white !important;
+  margin: 0 0 10px 0;
+}
+
+.caught-page .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.caught-page .stat-item {
+  text-align: center;
+}
+
+.caught-page .stat-number {
+  font-size: 36px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.caught-page .stat-label {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.caught-page .info-section {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.caught-page .info-section h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.caught-page .warning-signs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.caught-page .warning-item {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+  transition: transform 0.2s;
+}
+
+.caught-page .warning-item:hover {
+  transform: translateX(5px);
+}
+
+.caught-page .warning-item strong {
+  color: #667eea;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.caught-page .warning-item p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.caught-page .tips-list {
+  list-style: none;
+  padding: 0;
+}
+
+.caught-page .tips-list li {
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+  display: flex;
+  align-items: start;
+  gap: 10px;
+}
+
+.caught-page .tips-list li::before {
+  content: '✓';
+  color: #28a745;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.caught-page .action-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.caught-page .btn {
+  padding: 15px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.caught-page .btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.caught-page .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.caught-page .btn-secondary {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.caught-page .btn-secondary:hover {
+  background: #667eea;
+  color: white;
+}
+
+.caught-page .footer {
+  background: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+  color: #666 !important;
+  font-size: 14px;
+}
