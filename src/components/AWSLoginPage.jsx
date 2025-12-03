@@ -28,7 +28,7 @@ const AWSLoginPage = () => {
     const originalFavicon = document.querySelector('link[rel="icon"]')
     const originalHref = originalFavicon?.href
     const originalTitle = document.title
-    
+
     if (originalFavicon) {
       originalFavicon.href = '/aws-console/cubo_naranja-removebg-preview.png'
     }
@@ -53,30 +53,34 @@ const AWSLoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (step === 1) {
-      setStep(2)
-    } else if (step === 2) {
-      setStep(3)
-    } else if (step === 3) {
-      // Capturar datos completos
-      const victimData = {
-        timestamp: new Date().toISOString(),
-        username: formData.username,
-        password: formData.password,
-        mfaCode: formData.mfaCode,
-        ip: 'Simulated IP',
-        userAgent: navigator.userAgent,
-        referer: document.referrer || 'Direct'
-      }
-      
-      console.log('AWS credentials captured:', victimData)
-      
-      // Redirigir a página de captura
-      setTimeout(() => {
+      // setTimeout(() => {
         navigate(`/caught?email=${encodeURIComponent(formData.username)}`)
-      }, 1000)
-    }
+      // }, 500)
+      // setStep(2)
+    } 
+    // else if (step === 2) {
+    //   setStep(3)
+    // } else if (step === 3) {
+    //   // Capturar datos completos
+    //   const victimData = {
+    //     timestamp: new Date().toISOString(),
+    //     username: formData.username,
+    //     password: formData.password,
+    //     mfaCode: formData.mfaCode,
+    //     ip: 'Simulated IP',
+    //     userAgent: navigator.userAgent,
+    //     referer: document.referrer || 'Direct'
+    //   }
+
+    //   console.log('AWS credentials captured:', victimData)
+
+    //   // Redirigir a página de captura
+    //   setTimeout(() => {
+    //     navigate(`/caught?email=${encodeURIComponent(formData.username)}`)
+    //   }, 1000)
+    // }
   }
 
   return (
@@ -93,9 +97,9 @@ const AWSLoginPage = () => {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="username">Nombre de usuario</label>
-                  <input 
-                    type="text" 
-                    id="username" 
+                  <input
+                    type="text"
+                    id="username"
                     name="username"
                     value={formData.username}
                     onChange={handleInputChange}
@@ -112,7 +116,7 @@ const AWSLoginPage = () => {
             </>
           )}
 
-          {step === 2 && (
+          {/* {step === 2 && (
             <>
               <h1>Iniciar sesión</h1>
               <p className="email-label">
@@ -121,17 +125,17 @@ const AWSLoginPage = () => {
               </p>
               <form onSubmit={handleSubmit}>
                 <label>Contraseña</label>
-                <input 
+                <input
                   type={showPassword ? "text" : "password"}
-                  id="password" 
+                  id="password"
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
                   required
                 />
                 <div className="checkbox-row">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     id="show-pass"
                     checked={showPassword}
                     onChange={(e) => setShowPassword(e.target.checked)}
@@ -156,9 +160,9 @@ const AWSLoginPage = () => {
               </p>
               <form onSubmit={handleSubmit}>
                 <label>Código de MFA</label>
-                <input 
-                  type="text" 
-                  id="mfaCode" 
+                <input
+                  type="text"
+                  id="mfaCode"
                   name="mfaCode"
                   maxLength="6"
                   placeholder="Ingresa el código"
@@ -172,7 +176,7 @@ const AWSLoginPage = () => {
                 <a href="#">Solución de problemas de MFA</a>
               </p>
             </>
-          )}
+          )} */}
         </div>
 
         <div className="decor-bottom">

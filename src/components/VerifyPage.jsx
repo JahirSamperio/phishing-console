@@ -28,7 +28,7 @@ const VerifyPage = () => {
     
     try {
       // Registrar captura en el backend
-      await fetch('http://localhost:3001/api/capture', {
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/capture`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -2,7 +2,8 @@
   "name": "phishing-console-backend",
   "version": "1.0.0",
   "description": "Backend para sistema de phishing ético - Xal Digital",
-  "main": "server.js",
+
+  "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
