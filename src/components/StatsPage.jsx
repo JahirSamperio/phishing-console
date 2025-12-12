@@ -48,6 +48,8 @@ const StatsPage = () => {
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/stats`)
       const data = await response.json()
       
+      console.log('📊 Datos recibidos del backend:', data)
+      
       setStats({
         totalSent: data.enviados,
         totalAccess: data.enviados, // Simplificado por ahora
@@ -56,16 +58,13 @@ const StatsPage = () => {
         conversionRate: data.efectividad
       })
       
-      // Por ahora usar datos mock para las tablas
-      // En producción se obtendrían del backend
-      const mockVictims = []
-      const mockCampaigns = []
+      // Usar datos reales del backend
+      setVictims(data.victims || [])
+      setCampaigns(data.campaigns || [])
       
-      setVictims(mockVictims)
-      setCampaigns(mockCampaigns)
     } catch (error) {
       console.error('Error cargando estadísticas:', error)
-      // Fallback a datos mock
+      // Fallback a datos vacíos
       setStats({
         totalSent: 0,
         totalAccess: 0,
@@ -73,6 +72,8 @@ const StatsPage = () => {
         clickRate: 0,
         conversionRate: 0
       })
+      setVictims([])
+      setCampaigns([])
     }
   }
 
@@ -218,7 +219,7 @@ const StatsPage = () => {
           margin-bottom: 10px;
         }
         .stat-label {
-          color: #666;
+          color: #333;
           font-size: 16px;
           font-weight: 500;
         }
@@ -250,6 +251,7 @@ const StatsPage = () => {
         td {
           padding: 12px;
           border-bottom: 1px solid #f0f0f0;
+          color: #333;
         }
         tr:hover {
           background: #f8f9fa;
@@ -260,10 +262,10 @@ const StatsPage = () => {
         }
         .ip {
           font-family: 'Courier New', monospace;
-          color: #666;
+          color: #333;
         }
         .timestamp {
-          color: #999;
+          color: #555;
           font-size: 13px;
         }
         .badge {
@@ -280,7 +282,7 @@ const StatsPage = () => {
         .empty-state {
           text-align: center;
           padding: 40px;
-          color: #999;
+          color: #666;
         }
         .empty-state-icon {
           font-size: 64px;
@@ -288,7 +290,7 @@ const StatsPage = () => {
         }
         .user-agent {
           font-size: 12px;
-          color: #999;
+          color: #555;
           max-width: 300px;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -350,11 +352,11 @@ const StatsPage = () => {
                 {victims.map((victim, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td className="timestamp">{victim.timestamp}</td>
+                    <td className="timestamp">{new Date(victim.timestamp).toLocaleString()}</td>
                     <td className="email">{victim.email}</td>
-                    <td className="ip">{victim.ip}</td>
-                    <td className="user-agent" title={victim.userAgent}>
-                      {victim.userAgent}
+                    <td className="ip">{victim.ip_address}</td>
+                    <td className="user-agent" title={victim.user_agent}>
+                      {victim.user_agent}
                     </td>
                   </tr>
                 ))}
@@ -385,15 +387,15 @@ const StatsPage = () => {
               <tbody>
                 {campaigns.map((campaign, index) => (
                   <tr key={index}>
-                    <td className="timestamp">{campaign.timestamp}</td>
+                    <td className="timestamp">{new Date(campaign.timestamp).toLocaleString()}</td>
                     <td>
                       <span className="badge badge-success">
                         {campaign.status}
                       </span>
                     </td>
-                    <td className="email">{campaign.recipient}</td>
-                    <td>{campaign.sender}</td>
-                    <td>{templateNames[campaign.template] || campaign.template}</td>
+                    <td className="email">{campaign.destinatario}</td>
+                    <td style={{color: '#333'}}>{campaign.remitente_falso}</td>
+                    <td style={{color: '#333'}}>{templateNames[campaign.tipo_plantilla] || campaign.tipo_plantilla}</td>
                   </tr>
                 ))}
               </tbody>
@@ -403,29 +405,29 @@ const StatsPage = () => {
         
         <div className="section">
           <h2>📈 Análisis y Recomendaciones</h2>
-          <div style={{lineHeight: 2}}>
+          <div style={{lineHeight: 2, color: '#333'}}>
             {stats.totalVictims > 0 ? (
               <>
-                <p>✅ <strong>La campaña ha capturado {stats.totalVictims} víctima(s)</strong></p>
+                <p style={{color: '#333'}}>✅ <strong>La campaña ha capturado {stats.totalVictims} víctima(s)</strong></p>
                 {stats.conversionRate > 50 ? (
-                  <p>⚠️ <strong>Alerta:</strong> Tasa de conversión alta ({stats.conversionRate}%). 
+                  <p style={{color: '#333'}}>⚠️ <strong>Alerta:</strong> Tasa de conversión alta ({stats.conversionRate}%). 
                   Se recomienda capacitación urgente en ciberseguridad.</p>
                 ) : stats.conversionRate > 25 ? (
-                  <p>⚡ <strong>Advertencia:</strong> Tasa de conversión moderada ({stats.conversionRate}%). 
+                  <p style={{color: '#333'}}>⚡ <strong>Advertencia:</strong> Tasa de conversión moderada ({stats.conversionRate}%). 
                   Algunos empleados necesitan refuerzo en concientización.</p>
                 ) : (
-                  <p>✅ <strong>Bien:</strong> Tasa de conversión baja ({stats.conversionRate}%). 
+                  <p style={{color: '#333'}}>✅ <strong>Bien:</strong> Tasa de conversión baja ({stats.conversionRate}%). 
                   Los empleados muestran buen nivel de alerta.</p>
                 )}
               </>
             ) : (
-              <p>📊 <strong>Sin datos suficientes:</strong> Aún no hay víctimas registradas para análisis.</p>
+              <p style={{color: '#333'}}>📊 <strong>Sin datos suficientes:</strong> Aún no hay víctimas registradas para análisis.</p>
             )}
             
-            <p style={{marginTop: '20px', padding: '15px', background: '#f8f9fa', borderLeft: '4px solid #667eea', borderRadius: '4px'}}>
+            <p style={{marginTop: '20px', padding: '15px', background: '#f8f9fa', borderLeft: '4px solid #667eea', borderRadius: '4px', color: '#333'}}>
               💡 <strong>Próximos pasos:</strong>
             </p>
-            <ul style={{marginLeft: '40px', marginTop: '10px'}}>
+            <ul style={{marginLeft: '40px', marginTop: '10px', color: '#333'}}>
               <li>Realizar sesiones de capacitación con los empleados que cayeron</li>
               <li>Compartir esta experiencia como caso de estudio</li>
               <li>Implementar el botón de reporte de phishing en todos los clientes de correo</li>

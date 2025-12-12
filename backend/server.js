@@ -3,13 +3,26 @@ import cors from 'cors';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
+// Agregar después de los imports existentes:
+import pkg from 'pg';
+const { Pool } = pkg;
+
 dotenv.config();
+
+// Agregar después de dotenv.config():
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+});
 
 const app = express();
 
 // Arrays en memoria para logs (simple para Lambda)
-let campaignsLog = [];
-let victimsLog = [];
+// let campaignsLog = [];
+// let victimsLog = [];
 
 // Middleware
 app.use(cors());
@@ -126,23 +139,23 @@ const plantillas = {
 };
 
 // Función para registrar en memoria
-function registrarLog(tipo, datos) {
-  const timestamp = new Date().toISOString();
-  const entry = {
-    id: `${tipo}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    tipo,
-    timestamp,
-    ...datos
-  };
+// Reemplazar la función registrarLog existente:
+async function registrarLog(tipo, datos) {
+  const id = `${tipo}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   
   if (tipo === 'ENVIADO') {
-    campaignsLog.push(entry);
+    await pool.query(
+      'INSERT INTO email_campaigns (id, destinatario, remitente_falso, tipo_plantilla) VALUES ($1, $2, $3, $4)',
+      [id, datos.destinatario, datos.remitenteFalso, datos.tipoPlantilla]
+    );
   } else {
-    victimsLog.push(entry);
+    await pool.query(
+      'INSERT INTO victims_captured (id, email, ip_address, user_agent, plantilla) VALUES ($1, $2, $3, $4, $5)',
+      [id, datos.email, datos.ip, datos.userAgent, datos.plantilla]
+    );
   }
-  
-  console.log(`${tipo}:`, entry);
 }
+
 
 // Endpoint para enviar correos de phishing
 app.post('/api/send-phishing', async (req, res) => {
@@ -182,7 +195,7 @@ app.post('/api/send-phishing', async (req, res) => {
     await transporter.sendMail(mailOptions);
     
     // Registrar envío
-    registrarLog('ENVIADO', {
+    await registrarLog('ENVIADO', {
       destinatario,
       remitenteFalso,
       tipoPlantilla
@@ -202,11 +215,11 @@ app.post('/api/send-phishing', async (req, res) => {
 });
 
 // Endpoint para registrar capturas (cuando alguien cae en el phishing)
-app.post('/api/capture', (req, res) => {
+app.post('/api/capture',async (req, res) => {
   try {
     const { email, ip, userAgent, plantilla } = req.body;
     
-    registrarLog('CAPTURADO', {
+    await registrarLog('CAPTURADO', {
       email,
       ip,
       userAgent,
@@ -221,24 +234,32 @@ app.post('/api/capture', (req, res) => {
 });
 
 // Endpoint para obtener estadísticas
-app.get('/api/stats', (req, res) => {
+// Reemplazar el endpoint existente:
+app.get('/api/stats', async (req, res) => {
   try {
-    const enviados = campaignsLog.length;
-    const capturados = victimsLog.length;
+    const campaignsResult = await pool.query('SELECT COUNT(*) FROM email_campaigns');
+    const victimsResult = await pool.query('SELECT COUNT(*) FROM victims_captured');
+    
+    const enviados = parseInt(campaignsResult.rows[0].count);
+    const capturados = parseInt(victimsResult.rows[0].count);
     const efectividad = enviados > 0 ? ((capturados / enviados) * 100).toFixed(1) : 0;
+    
+    const campaigns = await pool.query('SELECT * FROM email_campaigns ORDER BY timestamp DESC');
+    const victims = await pool.query('SELECT * FROM victims_captured ORDER BY timestamp DESC');
     
     res.json({
       enviados,
       capturados,
       efectividad: `${efectividad}%`,
-      campaigns: campaignsLog,
-      victims: victimsLog
+      campaigns: campaigns.rows,
+      victims: victims.rows
     });
   } catch (error) {
     console.error('Error obteniendo estadísticas:', error);
     res.status(500).json({ error: 'Error obteniendo estadísticas' });
   }
 });
+
 
 // Exportar app para Lambda
 export default app;
