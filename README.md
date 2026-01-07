@@ -4,7 +4,7 @@ Migración del sistema de phishing ético de PHP a React con Vite y JavaScript.
 
 ## Descripción
 
-Este proyecto es una herramienta de concientización sobre ciberseguridad desarrollada por Xal Digital. Permite simular ataques de phishing de manera controlada para educar a los empleados sobre los riesgos de seguridad.
+Este proyecto es una herramienta de concientización sobre ciberseguridad desarrollada por XalDigital. Permite simular ataques de phishing de manera controlada para educar a los empleados sobre los riesgos de seguridad.
 
 ## Características
 
@@ -103,5 +103,5 @@ El uso indebido puede tener consecuencias legales.
 
 ## Autor
 
-Desarrollado por Xal Digital - Departamento de Ciberseguridad
+Desarrollado por XalDigital - Departamento de Ciberseguridad
 Contacto: alejandro.romero@xaldigital.com

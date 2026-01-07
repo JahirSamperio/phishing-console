@@ -108,7 +108,7 @@ const plantillas = {
           <div style='text-align: center; margin: 30px 0;'>
             <a href='${urlTrampa}' style='background: #d32f2f; color: white; padding: 15px 40px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;'>VERIFICAR AHORA</a>
           </div>
-          <p style='color: #666; font-size: 13px;'>Saludos,<br><strong>${remitenteFalso}</strong><br>Xal Digital</p>
+          <p style='color: #666; font-size: 13px;'>Saludos,<br><strong>${remitenteFalso}</strong><br>XalDigital</p>
         </div>
       </div>
     `
@@ -118,7 +118,7 @@ const plantillas = {
     cuerpo: (nombreObjetivo, remitenteFalso, urlTrampa) => `
       <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
         <div style='background: #2e7d32; padding: 20px; text-align: center;'>
-          <h2 style='color: white; margin: 0;'>Recursos Humanos - Xal Digital</h2>
+          <h2 style='color: white; margin: 0;'>Recursos Humanos - XalDigital</h2>
         </div>
         <div style='padding: 30px; background: #f5f5f5;'>
           <p>Hola ${nombreObjetivo},</p>

@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './SendPhishingPage.css'
 
 const SendPhishingPage = () => {
+  const [authenticated, setAuthenticated] = useState(false)
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     objetivos: [{ email: '', nombre: '' }],
     remitenteFalso: '',
@@ -9,8 +12,35 @@ const SendPhishingPage = () => {
     tipoPlantilla: ''
   })
   const [mensaje, setMensaje] = useState('')
-  const [error, setError] = useState('')
+  const [formError, setFormError] = useState('')
   const [enviando, setEnviando] = useState(false)
+
+  const correctPassword = 'XalSecurity2025'
+
+  useEffect(() => {
+    // Verificar si ya está autenticado en sessionStorage
+    const isAuth = sessionStorage.getItem('sendAuthenticated')
+    if (isAuth === 'true') {
+      setAuthenticated(true)
+    }
+  }, [])
+
+  const handleLogin = (e) => {
+    e.preventDefault()
+    if (password === correctPassword) {
+      setAuthenticated(true)
+      setError('')
+      sessionStorage.setItem('sendAuthenticated', 'true')
+    } else {
+      setError('Contraseña incorrecta. Contacta al administrador del sistema si necesitas acceso.')
+    }
+  }
+
+  const handleLogout = () => {
+    setAuthenticated(false)
+    sessionStorage.removeItem('sendAuthenticated')
+    setPassword('')
+  }
 
   const plantillas = {
     drive: {
@@ -68,13 +98,13 @@ const SendPhishingPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setMensaje('')
-    setError('')
+    setFormError('')
     setEnviando(true)
 
     const objetivosValidos = formData.objetivos.filter(obj => obj.email.trim() !== '' && obj.nombre.trim() !== '')
     
     if (objetivosValidos.length === 0) {
-      setError('[ERROR] >> NO TARGETS SPECIFIED')
+      setFormError('[ERROR] >> NO TARGETS SPECIFIED')
       setEnviando(false)
       return
     }
@@ -119,10 +149,182 @@ const SendPhishingPage = () => {
         tipoPlantilla: ''
       })
     } catch (err) {
-      setError('[ERROR] >> CONNECTION TO SERVER FAILED')
+      setFormError('[ERROR] >> CONNECTION TO SERVER FAILED')
     } finally {
       setEnviando(false)
     }
+  }
+
+  if (!authenticated) {
+    return (
+      <div className="login-page">
+        <style>{`
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8f9fa;
+            color: #212529;
+            line-height: 1.5;
+          }
+          .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: #f8f9fa;
+          }
+          .login-container {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 48px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          }
+          .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+          }
+          .login-header .security-badge {
+            background: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 16px;
+          }
+          .login-header h1 {
+            color: #212529;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+          }
+          .login-header p {
+            color: #6c757d;
+            font-size: 14px;
+          }
+          .form-group {
+            margin-bottom: 24px;
+          }
+          .form-group label {
+            display: block;
+            color: #495057;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+          }
+          .form-group input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 16px;
+            background: #ffffff;
+            color: #212529;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+          }
+          .form-group input[type="password"]:focus {
+            outline: none;
+            border-color: #0056b3;
+            box-shadow: 0 0 0 3px rgba(0,86,179,0.1);
+          }
+          .login-button {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+          }
+          .login-button:hover {
+            background: #004494;
+          }
+          .login-button:active {
+            background: #003d82;
+          }
+          .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+          }
+          .login-footer {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e9ecef;
+          }
+          .login-footer p {
+            color: #6c757d;
+            font-size: 12px;
+            line-height: 1.4;
+          }
+          .login-footer strong {
+            color: #495057;
+          }
+        `}</style>
+        
+        <div className="login-container">
+          <div className="login-header">
+            <div className="security-badge">Acceso Restringido</div>
+            <h1>Panel de Control</h1>
+            <p>Sistema de Phishing Ético</p>
+          </div>
+          
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+          
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label htmlFor="password">Contraseña de Acceso</label>
+              <input 
+                type="password" 
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Ingresa la contraseña"
+                required 
+                autoFocus
+              />
+            </div>
+            
+            <button type="submit" className="login-button">
+              Acceder al Sistema
+            </button>
+          </form>
+          
+          <div className="login-footer">
+            <p>
+              <strong>Xal Digital - Ciberseguridad</strong><br />
+              Este sistema permite ejecutar campañas de phishing ético autorizadas.<br />
+              Solo personal autorizado puede acceder.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -143,6 +345,9 @@ const SendPhishingPage = () => {
       
       <div className="container">
         <div className="header">
+          <button onClick={handleLogout} className="logout-btn" style={{float: 'right', padding: '8px 16px', background: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '14px'}}>
+            Cerrar Sesión
+          </button>
           <h1>[⚡] PHISHING FRAMEWORK v2.0 [⚡]</h1>
           <p>XAL-DIGITAL::CYBERSEC-DIVISION</p>
           <p style={{fontSize: '12px', marginTop: '10px'}}>[ROOT@ETHICAL-HACKER] A.ROMERO | AUTHORIZED ACCESS ONLY</p>
@@ -158,8 +363,8 @@ const SendPhishingPage = () => {
             <div className="alert alert-success">{mensaje}</div>
           )}
           
-          {error && (
-            <div className="alert alert-danger">{error}</div>
+          {formError && (
+            <div className="alert alert-danger">{formError}</div>
           )}
           
           <form onSubmit={handleSubmit}>

@@ -55,11 +55,28 @@ const AWSLoginPage = () => {
     e.preventDefault()
 
     if (step === 1) {
-      // setTimeout(() => {
-        navigate(`/caught?email=${encodeURIComponent(formData.username)}`)
-      // }, 500)
-      // setStep(2)
-    } 
+      const tipoPlantilla = searchParams.get('type') || 'aws'
+      
+      try {
+        // Registrar captura en el backend
+        await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/capture`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.username,
+            ip: 'Client IP',
+            userAgent: navigator.userAgent,
+            plantilla: tipoPlantilla
+          })
+        })
+      } catch (error) {
+        console.error('Error registrando captura:', error)
+      }
+      
+      navigate(`/caught?email=${encodeURIComponent(formData.username)}&type=${tipoPlantilla}`)
+    }
     // else if (step === 2) {
     //   setStep(3)
     // } else if (step === 3) {
