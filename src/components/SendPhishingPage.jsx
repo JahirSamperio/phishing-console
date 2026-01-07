@@ -44,19 +44,19 @@ const SendPhishingPage = () => {
 
   const plantillas = {
     drive: {
-      nombre: '📎 Documento compartido en Google Drive',
+      nombre: '[DOC] Documento compartido en Google Drive',
       preview: 'Simula un documento compartido en Google Drive. Efectividad: Alta (Google es usado diariamente en la empresa)'
     },
     aws: {
-      nombre: '☁️ Acceso AWS Console - Crítico',
+      nombre: '[AWS] Acceso AWS Console - Crítico',
       preview: 'Simula login de AWS Console con MFA. Efectividad: Muy Alta (infraestructura crítica + multi-step)'
     },
     ceo: {
-      nombre: '⚠️ Verificación urgente de seguridad',
+      nombre: '[SEC] Verificación urgente de seguridad',
       preview: 'Correo urgente de seguridad con cuenta regresiva. Efectividad: Muy Alta (urgencia + autoridad)'
     },
     rh: {
-      nombre: '💰 Bonos de fin de año - RH',
+      nombre: '[RH] Bonos de fin de año - RH',
       preview: 'Notificación de bonos de RH. Efectividad: Alta (incentivo económico)'
     }
   }
@@ -345,17 +345,72 @@ const SendPhishingPage = () => {
       
       <div className="container">
         <div className="header">
-          <button onClick={handleLogout} className="logout-btn" style={{float: 'right', padding: '8px 16px', background: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '14px'}}>
-            Cerrar Sesión
-          </button>
-          <h1>[⚡] PHISHING FRAMEWORK v2.0 [⚡]</h1>
+          <div style={{display: 'flex', gap: '8px', float: 'right'}}>
+            <a 
+              href="/stats" 
+              style={{
+                padding: '8px 16px', 
+                background: 'rgba(0, 255, 255, 0.1)', 
+                color: '#00ffff', 
+                textDecoration: 'none',
+                border: '1px solid #00ffff', 
+                borderRadius: '4px', 
+                cursor: 'pointer', 
+                fontSize: '12px',
+                fontFamily: "'Fira Code', monospace",
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                display: 'inline-block',
+                transition: 'all 0.3s',
+                textShadow: '0 0 5px #00ffff'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = 'rgba(0, 255, 255, 0.2)'
+                e.target.style.boxShadow = '0 0 10px rgba(0, 255, 255, 0.4)'
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'rgba(0, 255, 255, 0.1)'
+                e.target.style.boxShadow = 'none'
+              }}
+            >
+              [STATS]
+            </a>
+            <button 
+              onClick={handleLogout} 
+              style={{
+                padding: '8px 16px', 
+                background: 'rgba(255, 0, 0, 0.1)', 
+                color: '#ff0000', 
+                border: '1px solid #ff0000', 
+                borderRadius: '4px', 
+                cursor: 'pointer', 
+                fontSize: '12px',
+                fontFamily: "'Fira Code', monospace",
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                transition: 'all 0.3s',
+                textShadow: '0 0 5px #ff0000'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = 'rgba(255, 0, 0, 0.2)'
+                e.target.style.boxShadow = '0 0 10px rgba(255, 0, 0, 0.4)'
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'rgba(255, 0, 0, 0.1)'
+                e.target.style.boxShadow = 'none'
+              }}
+            >
+              [LOGOUT]
+            </button>
+          </div>
+          <h1>[{'>>'}] PHISHING FRAMEWORK v2.0 [{'<<'}]</h1>
           <p>XAL-DIGITAL::CYBERSEC-DIVISION</p>
           <p style={{fontSize: '12px', marginTop: '10px'}}>[ROOT@ETHICAL-HACKER] A.ROMERO | AUTHORIZED ACCESS ONLY</p>
         </div>
         
         <div className="content">
           <div className="alert-warning">
-            <strong>⚠️ AVISO IMPORTANTE:</strong> Esta herramienta es solo para uso autorizado en campañas de concientización internas. 
+            <strong>[!] AVISO IMPORTANTE:</strong> Esta herramienta es solo para uso autorizado en campañas de concientización internas. 
             Uso indebido puede resultar en consecuencias legales.
           </div>
           

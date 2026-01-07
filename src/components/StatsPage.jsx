@@ -4,6 +4,7 @@ const StatsPage = () => {
   const [authenticated, setAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const [stats, setStats] = useState({
     totalSent: 0,
     totalVictims: 0,
@@ -47,6 +48,7 @@ const StatsPage = () => {
   }
 
   const loadData = async () => {
+    setLoading(true)
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/stats`)
       const data = await response.json()
@@ -73,6 +75,8 @@ const StatsPage = () => {
       })
       setVictims([])
       setCampaigns([])
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -359,6 +363,15 @@ const StatsPage = () => {
 
   return (
     <div style={{ margin: 0, padding: 0, boxSizing: 'border-box' }}>
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-content">
+            <div className="loading-spinner"></div>
+            <div className="loading-text">Cargando estadísticas...</div>
+          </div>
+        </div>
+      )}
+      
       <style>{`
         * {
           margin: 0;
@@ -631,11 +644,80 @@ const StatsPage = () => {
           background: #004494;
           border-color: #004494;
         }
+        .loading-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(248, 249, 250, 0.9);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        }
+        .loading-content {
+          background: #ffffff;
+          border: 1px solid #dee2e6;
+          border-radius: 8px;
+          padding: 32px;
+          text-align: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .loading-spinner {
+          width: 40px;
+          height: 40px;
+          border: 3px solid #e9ecef;
+          border-top: 3px solid #0056b3;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 0 auto 16px;
+        }
+        .loading-text {
+          color: #495057;
+          font-size: 16px;
+          font-weight: 500;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
       `}</style>
       
       <div className="container">
         <div className="header">
-          <button onClick={handleLogout} className="logout-btn">Cerrar Sesión</button>
+          <div style={{display: 'flex', gap: '8px', float: 'right'}}>
+            <a 
+              href="/send" 
+              style={{
+                padding: '8px 16px', 
+                background: '#28a745', 
+                color: 'white', 
+                textDecoration: 'none',
+                border: 'none', 
+                borderRadius: '4px', 
+                cursor: 'pointer', 
+                fontSize: '14px',
+                display: 'inline-block'
+              }}
+            >
+              Panel de Control
+            </a>
+            <button 
+              onClick={handleLogout} 
+              style={{
+                padding: '8px 16px', 
+                background: '#dc3545', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '4px', 
+                cursor: 'pointer', 
+                fontSize: '14px'
+              }}
+            >
+              Cerrar Sesión
+            </button>
+          </div>
           <h1>Estadísticas de Campaña de Phishing Ético</h1>
           <p>XalDigital - Departamento de Ciberseguridad</p>
           <p className="subtitle">Última actualización: {new Date().toLocaleString()}</p>
